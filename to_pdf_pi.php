@@ -4,16 +4,16 @@
  * Try increasing memory available, mostly for PDF generation
  */
 ini_set('memory_limit','64M');
+include(APPPATH.'config/to_pdf'.EXT);
+include(APPPATH.'plugins/dompdf/dompdf_config.inc'.EXT); 
+
 
 function pdf_create($html, $filename, $stream=TRUE) 
-{
-	include(APPPATH.'config/to_pdf'.EXT);
+{	
 	if (isset($to_pdf))
 	{
-		$this->path = $to_pdf['path'];
-	}
-	require_once(BASEPATH.'plugins/dompdf/dompdf_config.inc.php'); 
-	
+		$path = $to_pdf['path'];
+	}	
 	$dompdf = new DOMPDF();
 	$dompdf->set_paper('letter', 'portrait'); 
 	$dompdf->load_html($html);
@@ -23,6 +23,6 @@ function pdf_create($html, $filename, $stream=TRUE)
 	{
 		$dompdf->stream($filename.'.pdf');
 	}
-	write_file($this->config.$filename.'.pdf', $dompdf->output());
+	write_file($path.$filename.'.pdf', $dompdf->output());
 }
 ?>
